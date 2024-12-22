@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { useGetUser } from '../services/getUser';
+import { useNavigate } from 'react-router';
 
 const Login: React.FC = () => {
+
+  const navigate = useNavigate();
   const { mutateAsync: getUser } = useGetUser();
 
   const [formData, setFormData] = useState({
@@ -45,6 +48,7 @@ const Login: React.FC = () => {
         password: formData.password,
       });
       console.log(response);
+      navigate("/upload")
     }
   };
 
@@ -90,9 +94,9 @@ const Login: React.FC = () => {
           Log In
         </button>
       </form>
-      <a href="/sign-up" className="d-block mt-3 text-center">
+      {/* <a href="/sign-up" className="d-block mt-3 text-center">
         Don't have an account? Sign Up
-      </a>
+      </a> */}
     </div>
   );
 };
