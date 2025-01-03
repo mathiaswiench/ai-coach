@@ -26,10 +26,10 @@ export default class TypeBuilder {
     constructor() {
         this.tb = new _TypeBuilder({
           classes: new Set([
-            "Training","TrainingPlan","Week",
+            "Interval","Training","TrainingPlan","Week",
           ]),
           enums: new Set([
-            
+            "ActivityType",
           ])
         });
         

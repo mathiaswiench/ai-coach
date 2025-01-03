@@ -13,6 +13,7 @@
     "@neondatabase/serverless": "^0.10.4",
     "@tanstack/react-query": "^5.62.8",
     "bcryptjs": "^2.4.3",
+    "date-fns": "^4.1.0",
     "drizzle-orm": "^0.38.2",
     "next": "15.1.2",
     "papaparse": "^5.4.1",

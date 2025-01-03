@@ -35,15 +35,33 @@ export function all_succeeded<CheckName extends string>(checks: Record<CheckName
 export function get_checks<CheckName extends string>(checks: Record<CheckName, Check>): Check[] {
     return Object.values(checks)
 }
+export enum ActivityType {
+  EASY_RUN = "EASY_RUN",
+  LONG_RUN = "LONG_RUN",
+  INTERVAL_RUN = "INTERVAL_RUN",
+  REST = "REST",
+}
+
+export interface Interval {
+  length: number
+  targetPace: number
+  reptitions: number
+  restBetweenRounds: number
+  
+}
+
 export interface Training {
   day: string
-  activity: string
-  targetPace: number
+  activity: ActivityType
+  targetAvgPace: number
   length: number
+  interval: Interval
   
 }
 
 export interface TrainingPlan {
+  currentTime: string
+  currentPace: number
   training: Week[]
   
 }

@@ -1,4 +1,8 @@
 "use client"
+import { Goal } from "@/baml_client";
+import formatSeconds from "@/utils/formatSeconds";
+import { differenceInCalendarWeeks } from "date-fns";
+import { format } from "path";
 import { useEffect, useState } from "react";
 
 const TrainingPlanGenerator: React.FC = () => {
@@ -6,19 +10,31 @@ const TrainingPlanGenerator: React.FC = () => {
     const [loading, setIsLoading] = useState<boolean>(false)
     const [trainingPlan, setTrainingPlan] = useState([])
     const [error, setError] = useState<string | null>(null);
+    const [goal, setGoal] = useState<string>()
+    const [targetTime, setTargetTime] = useState<string>()
+    const [competitionDate, setCompetitionDate] = useState<string>()
 
     const weekDays =  ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+
+
+  const calculateTimeToCompetition = (date: string) => {
+    const result = differenceInCalendarWeeks(new Date(date), new Date());
+    return result;
+  }
 
   const handleCreateTrainingPlan = async () => {
     try {
       setIsLoading(true)
-
+      var timeDifference = 0;
+      if (competitionDate) {
+        timeDifference = calculateTimeToCompetition(competitionDate)
+      }
       const response = await fetch('/api/getTrainingPlan', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ data }),
+        body: JSON.stringify({ data, goal, targetTime, timeDifference }),
       });
       
 
@@ -26,11 +42,12 @@ const TrainingPlanGenerator: React.FC = () => {
       
       const result = await response.json();
       console.log(result.trainingPlan.training)
+      console.log(result.trainingPlan.currentTime)
+      console.log(formatSeconds(result.trainingPlan.currentPace))
       sessionStorage.setItem("trainingplan", JSON.stringify(result.trainingPlan.training))
       setTrainingPlan(result.trainingPlan.training)
       
     } catch (err) {
-      console.log(trainingPlan.length)
       setError(err.message);
     } finally {
       
@@ -74,6 +91,16 @@ const TrainingPlanGenerator: React.FC = () => {
         </div>
 
         <div className="flex gap-4">
+          <label >Choose your goal:</label>
+          <select id="goals" name="goals" onChange={(event) => setGoal(event.target.value)}>
+            <option value="Marathon">Marathon</option>
+            <option value="Half-Marathon">Half-Marathon</option>
+          </select> 
+          <label >What is your target time?</label>
+          <input type="string" onChange={(event) => setTargetTime(event.target.value)}></input>
+          <label >Date of the competition:</label>
+          <input type="date" onChange={(event) => setCompetitionDate(event.target.value)}></input>
+
           <button
             type="button"
             className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
@@ -123,12 +150,16 @@ const TrainingPlanGenerator: React.FC = () => {
                           className="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
                         >
                           {trainingForDay && (
+                            trainingForDay.activity != "REST" ?
                             <>
                               <p>{trainingForDay.day}</p>
                               <p>{trainingForDay.activity}</p>
                               <p>{trainingForDay.length} km</p>
-                              <p>{trainingForDay.targetPace} min/s</p>
+                              <p>{formatSeconds(trainingForDay.targetAvgPace)} min/s</p>
+                              {trainingForDay.activity === "INTERVAL_RUN" ? <p>{trainingForDay.interval.reptitions} x {trainingForDay.interval.length} km @ {formatSeconds(trainingForDay.interval.targetPace)} with {formatSeconds(trainingForDay.interval.restBetweenRounds)} rest.</p> : null}
+                              
                             </>
+                            : trainingForDay.activity
                           )}
                         </td>
                       );
