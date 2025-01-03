@@ -1,0 +1,16 @@
+label {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    text-align: left;
+    width: 800px;
+    line-height: 26px;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+}
+
+.input-fields {
+    flex: 0 0 200px;
+    margin-left: 10px;
+    background-color: #E9E9ED;
+}

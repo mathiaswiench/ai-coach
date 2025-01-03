@@ -55,7 +55,7 @@ export interface Training {
   activity: ActivityType
   targetAvgPace: number
   length: number
-  interval: Interval
+  interval?: Interval | null | null
   
 }
 

@@ -2,10 +2,13 @@
 import React, { useState } from 'react';
 import { useGetUser } from '../services/getUser';
 import { useRouter } from 'next/navigation'
+import { useAuth } from '@/app/context/AuthContext';
 
 const Login: React.FC = () => {
   const router = useRouter()
   const { mutateAsync: getUser } = useGetUser();
+  const { login } = useAuth();
+
 
   const [formData, setFormData] = useState({
     email: '',
@@ -47,6 +50,7 @@ const Login: React.FC = () => {
         email: formData.email,
         password: formData.password,
       });
+      login();
       router.push("/fileupload")
     }
   };
@@ -71,9 +75,8 @@ const Login: React.FC = () => {
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                className={`appearance-none rounded-none relative block w-full px-3 py-2 border ${
-                  errors.email ? 'border-red-500' : 'border-gray-300'
-                } placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm`}
+                className={`appearance-none rounded-none relative block w-full px-3 py-2 border ${errors.email ? 'border-red-500' : 'border-gray-300'
+                  } placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm`}
                 placeholder="Email address"
               />
               {errors.email && (
@@ -90,9 +93,8 @@ const Login: React.FC = () => {
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
-                className={`appearance-none rounded-none relative block w-full px-3 py-2 border ${
-                  errors.password ? 'border-red-500' : 'border-gray-300'
-                } placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm`}
+                className={`appearance-none rounded-none relative block w-full px-3 py-2 border ${errors.password ? 'border-red-500' : 'border-gray-300'
+                  } placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm`}
                 placeholder="Password"
               />
               {errors.password && (

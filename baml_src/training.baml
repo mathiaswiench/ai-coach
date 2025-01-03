@@ -22,7 +22,7 @@ class Training {
   activity ActivityType @description("Activitiy type of the training. If it is a rest day, please use REST.")
   targetAvgPace int @description("Average pace in seconds across the training session. If activity is INTERVAL_RUN use the average pace across all intervals.")
   length float @description("Total length of the training session")
-  interval Interval @description("If activity is INTERVAL_RUN, specify the intervals")
+  interval Interval | null @description("If activity is INTERVAL_RUN, specify the intervals")
 
 }
 
