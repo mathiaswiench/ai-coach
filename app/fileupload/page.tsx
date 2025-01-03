@@ -5,10 +5,40 @@ import { useRouter } from 'next/navigation'
 import ProtectedRoute from '@/components/ProtectedRoute';
 
 const FileUpload: React.FC = () => {
+
+  interface CSVData {
+    Aktivitätstyp: string;
+    Datum: string;
+    Favorit: string;
+    Titel: string;
+    Distanz: string;
+    Kalorien: string | '--';
+    Zeit: string;
+    'Ø Herzfrequenz': string | '--';
+    'Maximale Herzfrequenz': string | '--';
+    'Aerober TE': string | '--';
+    'Ø Schrittfrequenz (Laufen)': string | '--';
+    'Max. Schrittfrequenz (Laufen)': string | '--';
+    'Ø Pace': string | '--';
+    'Beste Pace': string | '--';
+    'Anstieg gesamt': string | '--';
+    'Abstieg gesamt': string | '--';
+    'Ø Schrittlänge': string | '--';
+    'Training Stress Score®': string;
+    Dekompression: 'Ja' | 'Nein';
+    'Beste Rundenzeit': string;
+    'Anzahl der Runden': string;
+    'Zeit in Bewegung': string;
+    'Verstrichene Zeit': string;
+    'Minimale Höhe': string | '--';
+    'Maximale Höhe': string | '--';
+  }
+
+
   const router = useRouter();
 
   const [file, setFile] = useState<File | null>(null);
-  const [data, setData] = useState<string[]>([]);
+  const [data, setData] = useState<CSVData[]>([]);
 
   const readFileAsText = (file: File) => {
     return new Promise((resolve, reject) => {
@@ -59,7 +89,7 @@ const FileUpload: React.FC = () => {
         header: true,
         skipEmptyLines: true,
         complete: (results) => {
-          setData(results.data);
+          setData(results.data as CSVData[]);
         },
         error: (error: unknown) => {
           console.log(`Error parsing CSV`, error);
