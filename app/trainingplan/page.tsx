@@ -4,10 +4,11 @@ import { differenceInCalendarWeeks } from "date-fns";
 import { useEffect, useState } from "react";
 import "./styles.css"
 import ProtectedRoute from "@/components/ProtectedRoute";
+import { Week } from "@/baml_client";
 const TrainingPlanGenerator: React.FC = () => {
   const [data, setData] = useState<string>();
   const [loading, setIsLoading] = useState<boolean>(false)
-  const [trainingPlan, setTrainingPlan] = useState([])
+  const [trainingPlan, setTrainingPlan] = useState<Week[]>([])
   const [goal, setGoal] = useState<string>()
   const [targetTime, setTargetTime] = useState<string>()
   const [competitionDate, setCompetitionDate] = useState<string>()
@@ -203,7 +204,7 @@ const TrainingPlanGenerator: React.FC = () => {
                                   <p>{trainingForDay.activity}</p>
                                   <p>{trainingForDay.length} km</p>
                                   <p>{formatSeconds(trainingForDay.targetAvgPace)} min/s</p>
-                                  {trainingForDay.activity === "INTERVAL_RUN" ? <p>{trainingForDay.interval.reptitions} x {trainingForDay.interval.length} km @ {formatSeconds(trainingForDay.interval.targetPace)} with {formatSeconds(trainingForDay.interval.restBetweenRounds)} rest.</p> : null}
+                                  {trainingForDay.activity === "INTERVAL_RUN" && trainingForDay.interval ? <p>{trainingForDay.interval.reptitions} x {trainingForDay.interval.length} km @ {formatSeconds(trainingForDay.interval.targetPace)} with {formatSeconds(trainingForDay.interval.restBetweenRounds)} rest.</p> : null}
 
                                 </>
                                 : trainingForDay.activity
