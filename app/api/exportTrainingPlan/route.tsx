@@ -5,20 +5,19 @@ import PDFTrainingPlan from '@/components/PDFTrainingPlan';
 export async function POST(req: Request) {
     try {
         const data = await req.json();
-
-        // Create PDF stream
         const stream = await renderToStream(
             <PDFTrainingPlan data={data.trainingPlan} />
         );
 
-        // Convert stream to buffer
-        const chunks: Uint8Array[] = [];
+        const chunks: Buffer[] = [];
         for await (const chunk of stream) {
-            chunks.push(chunk);
+            chunks.push(Buffer.from(chunk));
         }
+        
         const pdfBuffer = Buffer.concat(chunks);
+        const uint8Array = new Uint8Array(pdfBuffer);
 
-        return new Response(pdfBuffer, {
+        return new Response(uint8Array, {
             headers: {
                 'Content-Type': 'application/pdf',
                 'Content-Disposition': 'attachment; filename="training-plan.pdf"',
