@@ -9,9 +9,6 @@ const FileUpload: React.FC = () => {
 
   const [file, setFile] = useState<File | null>(null);
   const [data, setData] = useState<string[]>([]);
-  const [errors, setErrors] = useState({
-    file: '',
-  });
 
   const readFileAsText = (file: File) => {
     return new Promise((resolve, reject) => {
@@ -30,13 +27,12 @@ const FileUpload: React.FC = () => {
     const selectedFile = e.target.files ? e.target.files[0] : null;
 
     if (selectedFile && selectedFile.type !== 'text/csv') {
-      setErrors({ file: 'Please upload a valid CSV file' });
+      console.log("Invalid file type")
       setFile(null);
       return;
     }
 
     setFile(selectedFile);
-    setErrors({ file: '' });
   };
 
   const handleNext = () => {
@@ -46,32 +42,31 @@ const FileUpload: React.FC = () => {
 
   const validateFile = (): boolean => {
     if (!file) {
-      setErrors({ file: 'No file selected. Please upload a file' });
+      console.log("No file selected")
       return false;
     }
     return true;
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!validateFile()) return;
 
     try {
       const csvContent = await readFileAsText(file!);
-      Papa.parse(csvContent, {
+      Papa.parse(csvContent as string, {
         header: true,
         skipEmptyLines: true,
         complete: (results) => {
           setData(results.data);
-          setErrors({ file: '' });
         },
-        error: (err) => {
-          setErrors({ file: `Error parsing CSV: ${err.message}` });
+        error: (error: unknown) => {
+          console.log(`Error parsing CSV`, error);
         },
       });
-    } catch (error) {
-      setErrors({ file: error.message });
+    } catch (error: unknown) {
+      console.log(`Error reading file`, error);
     }
   };
 
@@ -96,12 +91,9 @@ const FileUpload: React.FC = () => {
                   id="csvFile"
                   accept=".csv"
                   onChange={handleFileChange}
-                  className={`appearance-none relative block w-full px-3 py-2 border ${errors.file ? 'border-red-500' : 'border-gray-300'
-                    } rounded-md placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm`}
+                  className="appearance-none relative block w-full px-3 py-2 border"
                 />
-                {errors.file && (
-                  <p className="mt-1 text-sm text-red-600">{errors.file}</p>
-                )}
+
               </div>
             </div>
 
