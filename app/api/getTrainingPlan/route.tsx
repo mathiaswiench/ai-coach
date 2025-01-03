@@ -1,4 +1,3 @@
-import Error from 'next/error';
 import { b } from '../../../baml_client';
 
 export async function POST(req: Request) {
@@ -11,6 +10,7 @@ export async function POST(req: Request) {
     const trainingPlan = await b.TrainingPlanGenerator(goal, data, targetTime, timeDifference);
     return Response.json({ trainingPlan });
   } catch (error: unknown) {
+    console.error('Failed to generate training plan:', error);
     return Response.json({ error: 'Failed to generate training plan' }, { status: 500 });
   }
 }
