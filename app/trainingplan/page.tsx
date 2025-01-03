@@ -1,7 +1,6 @@
 "use client"
 import formatSeconds from "@/utils/formatSeconds";
 import { differenceInCalendarWeeks } from "date-fns";
-import { format } from "path";
 import { useEffect, useState } from "react";
 import "./styles.css"
 import ProtectedRoute from "@/components/ProtectedRoute";
@@ -9,7 +8,6 @@ const TrainingPlanGenerator: React.FC = () => {
   const [data, setData] = useState<string>();
   const [loading, setIsLoading] = useState<boolean>(false)
   const [trainingPlan, setTrainingPlan] = useState([])
-  const [error, setError] = useState<string | null>(null);
   const [goal, setGoal] = useState<string>()
   const [targetTime, setTargetTime] = useState<string>()
   const [competitionDate, setCompetitionDate] = useState<string>()
@@ -31,7 +29,7 @@ const TrainingPlanGenerator: React.FC = () => {
     }
     try {
       setIsLoading(true)
-      var timeDifference = 0;
+      let timeDifference = 0;
       if (competitionDate) {
         timeDifference = calculateTimeToCompetition(competitionDate)
       }
@@ -54,7 +52,8 @@ const TrainingPlanGenerator: React.FC = () => {
       setTrainingPlan(result.trainingPlan.training)
 
     } catch (err) {
-      setError(err.message);
+      console.error('Failed to generate plan:', err);
+
     } finally {
       setIsLoading(false)
     }
@@ -83,7 +82,6 @@ const TrainingPlanGenerator: React.FC = () => {
       a.remove();
     } catch (error) {
       console.error('Export failed:', error);
-      setError('Failed to export training plan');
     }
   };
 
@@ -94,10 +92,10 @@ const TrainingPlanGenerator: React.FC = () => {
       if (storedData) {
         setData(storedData);
       } else {
-        setError("No data found. Please upload a CSV file first.");
+        console.log("No data found. Please upload a CSV file first.");
       }
     } catch (err) {
-      setError("Error loading data");
+      console.error("Error loading data:", err);
     }
   }, [])
 
@@ -172,7 +170,7 @@ const TrainingPlanGenerator: React.FC = () => {
                       Week
                     </th>
                     {
-                      weekDays.map((day, index) => (
+                      weekDays.map((day) => (
                         <th
                           key={day}
                           className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"

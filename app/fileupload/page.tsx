@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Papa from 'papaparse';
 import { useRouter } from 'next/navigation'
 import ProtectedRoute from '@/components/ProtectedRoute';
@@ -8,7 +8,7 @@ const FileUpload: React.FC = () => {
   const router = useRouter();
 
   const [file, setFile] = useState<File | null>(null);
-  const [data, setData] = useState<any[]>([]);
+  const [data, setData] = useState<string[]>([]);
   const [errors, setErrors] = useState({
     file: '',
   });

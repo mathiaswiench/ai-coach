@@ -46,10 +46,11 @@ const Login: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
-      const response = await getUser({
+      await getUser({
         email: formData.email,
         password: formData.password,
       });
+
       login();
       router.push("/fileupload")
     }
