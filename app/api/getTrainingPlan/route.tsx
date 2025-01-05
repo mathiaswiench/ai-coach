@@ -12,10 +12,13 @@ export async function POST(req: Request) {
 
     const start = Date.now();
     const { data, goal, targetTime, timeDifference } = await req.json();
-
+    console.log(data)
+    console.log(goal)
+    console.log(targetTime)
+    console.log(timeDifference)
     // Add timeout handling
     const trainingPlan = await Promise.race([
-      b.TrainingPlanGenerator(goal, data, targetTime, timeDifference),
+      b.TrainingPlanGenerator(data, goal, targetTime, timeDifference),
       new Promise((_, reject) =>
         setTimeout(() => reject(new Error('Request timeout')), 59000)
       )

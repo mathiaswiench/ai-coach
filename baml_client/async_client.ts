@@ -40,18 +40,18 @@ export class BamlAsyncClient {
 
   get stream() {
     return this.stream_client
-  }  
+  }
 
   
   async TrainingPlanGenerator(
-      data: string,goal: string,timeLimit: string,timeToCompetition: number,
+      data?: string | null | null,goal: string,timeLimit: string,timeToCompetition: number,
       __baml_options__?: { tb?: TypeBuilder, clientRegistry?: ClientRegistry }
   ): Promise<TrainingPlan> {
     try {
       const raw = await this.runtime.callFunction(
         "TrainingPlanGenerator",
         {
-          "data": data,"goal": goal,"timeLimit": timeLimit,"timeToCompetition": timeToCompetition
+          "data": data?? null,"goal": goal,"timeLimit": timeLimit,"timeToCompetition": timeToCompetition
         },
         this.ctx_manager.cloneContext(),
         __baml_options__?.tb?.__tb(),
@@ -75,14 +75,14 @@ class BamlStreamClient {
 
   
   TrainingPlanGenerator(
-      data: string,goal: string,timeLimit: string,timeToCompetition: number,
+      data?: string | null | null,goal: string,timeLimit: string,timeToCompetition: number,
       __baml_options__?: { tb?: TypeBuilder, clientRegistry?: ClientRegistry }
   ): BamlStream<RecursivePartialNull<TrainingPlan>, TrainingPlan> {
     try {
       const raw = this.runtime.streamFunction(
         "TrainingPlanGenerator",
         {
-          "data": data,"goal": goal,"timeLimit": timeLimit,"timeToCompetition": timeToCompetition
+          "data": data ?? null,"goal": goal,"timeLimit": timeLimit,"timeToCompetition": timeToCompetition
         },
         undefined,
         this.ctx_manager.cloneContext(),

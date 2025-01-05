@@ -44,14 +44,14 @@ export class BamlSyncClient {
 
   
   TrainingPlanGenerator(
-      data: string,goal: string,timeLimit: string,timeToCompetition: number,
+      data?: string | null | null,goal: string,timeLimit: string,timeToCompetition: number,
       __baml_options__?: { tb?: TypeBuilder, clientRegistry?: ClientRegistry }
   ): TrainingPlan {
     try {
     const raw = this.runtime.callFunctionSync(
       "TrainingPlanGenerator",
       {
-        "data": data,"goal": goal,"timeLimit": timeLimit,"timeToCompetition": timeToCompetition
+        "data": data?? null,"goal": goal,"timeLimit": timeLimit,"timeToCompetition": timeToCompetition
       },
       this.ctx_manager.cloneContext(),
       __baml_options__?.tb?.__tb(),

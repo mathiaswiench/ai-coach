@@ -23,7 +23,7 @@ const TrainingPlanGenerator: React.FC = () => {
   }
 
   const handleCreateTrainingPlan = async () => {
-    if (!data || !goal || !targetTime || !competitionDate) {
+    if (!goal || !targetTime || !competitionDate) {
       setShowToast(true);
       setTimeout(() => setShowToast(false), 3000); // Hide after 3 seconds
       return;

@@ -145,6 +145,15 @@ const FileUpload: React.FC = () => {
               </button>
             </div>
           </form>
+          <div className='flex w-full justify-center'>
+            <button
+              onClick={() => router.push("/trainingplan")}
+              className="w-1/3 py-1 px-4 border border-transparent text-sm underline font-medium rounded-md text-indigo-600"
+            >
+              Skip
+            </button>
+          </div>
+
 
           {data.length > 0 && (
             <div className="mt-8">

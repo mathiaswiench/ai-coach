@@ -34,7 +34,7 @@ enum ActivityType {
 }
 
 // Create a function to extract the resume from a string.
-function TrainingPlanGenerator(data: string, goal: string, timeLimit: string, timeToCompetition: int) -> TrainingPlan {
+function TrainingPlanGenerator(data: string | null, goal: string, timeLimit: string, timeToCompetition: int) -> TrainingPlan {
   // Specify a client as provider/model-name
   // you can use custom LLM params with a custom client name from clients.baml like "client CustomHaiku"
   client "openai/gpt-4o" // Set OPENAI_API_KEY to use this client.
