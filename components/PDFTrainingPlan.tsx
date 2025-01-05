@@ -1,15 +1,10 @@
 import React from 'react';
 import { Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
 import formatSeconds from '@/utils/formatSeconds';
+import { Week } from '@/baml_client';
 
 interface TrainingPlanProps {
-    data: Array<{
-        week: number;
-        training: Array<{
-            day: string;
-            activity: string;
-        }>;
-    }>;
+    data: Week[];
 }
 
 const styles = StyleSheet.create({
@@ -87,7 +82,7 @@ const PDFTrainingPlan: React.FC<TrainingPlanProps> = ({ data }) => (
                                             < View >
                                                 <Text>{trainingForDay.length} km</Text>
                                                 <Text>{formatSeconds(trainingForDay.targetAvgPace)} min/s</Text>
-                                                {trainingForDay.activity === "INTERVAL_RUN" ? <Text>{trainingForDay.interval.reptitions} x {trainingForDay.interval.length} km @ {formatSeconds(trainingForDay.interval.targetPace)} with {formatSeconds(trainingForDay.interval.restBetweenRounds)} rest.</Text> : null}
+                                                {trainingForDay.activity === "INTERVAL_RUN" && trainingForDay.interval ? <p>{trainingForDay.interval.reptitions} x {trainingForDay.interval.length} km @ {formatSeconds(trainingForDay.interval.targetPace)} with {formatSeconds(trainingForDay.interval.restBetweenRounds)} rest.</p> : null}
 
                                             </View>
 
