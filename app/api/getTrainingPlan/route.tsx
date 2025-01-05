@@ -1,6 +1,6 @@
 import { b } from '../../../baml_client';
 
-export const maxDuration = 300; // Set max duration to 5 minutes
+export const maxDuration = 60; // Set max duration to 5 minutes
 export const dynamic = 'force-dynamic'; // Disable static optimization
 
 export async function POST(req: Request) {
@@ -17,7 +17,7 @@ export async function POST(req: Request) {
     const trainingPlan = await Promise.race([
       b.TrainingPlanGenerator(goal, data, targetTime, timeDifference),
       new Promise((_, reject) =>
-        setTimeout(() => reject(new Error('Request timeout')), 29000)
+        setTimeout(() => reject(new Error('Request timeout')), 59000)
       )
     ]);
 
