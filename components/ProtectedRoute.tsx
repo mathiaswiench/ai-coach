@@ -7,10 +7,14 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
     const router = useRouter();
 
     useEffect(() => {
-        if (!isAuthenticated) {
+        if (!isAuthenticated && process.env.NEXT_PUBLIC_USER_AUTHENTICATION === "True") {
             router.push('/');
         }
     }, [isAuthenticated, router]);
+
+    if (process.env.NEXT_PUBLIC_USER_AUTHENTICATION === "False") {
+        return <>{children}</>
+    }
 
     return isAuthenticated ? <>{children}</> : null;
 };

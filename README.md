@@ -1,36 +1,19 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+### AI Coach
+Can an LLM write good a training plan to finish a marathon? This is the test.
 
-## Getting Started
+### Approach
+You can upload a `.csv` file containing recent athletic activities e.g. from [Garmin Connect](https://connect.garmin.com/). This is optional and you could also skip this step.
+Next you define your target. Currently, `Marathon` or `Half-Marathon` is supported. Together with your `target_time` and `date_of_competition` the LLM creates a training plan using. 
 
-First, run the development server:
+Their is a DB running only for user authentication purposes. No data is stored. If you upload your a `.csv` it will be stored in your `sessionStorage`.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Initially, I planned to have a dedicated [python backend](https://github.com/mathiaswiench/prava_backend) to parse the relevant data.
+For simplicity reasons, I later tried to rewrite it only using `TypeScript` and `Next.JS`.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### BAML
+[BAML: Basically a Made-up Language](https://github.com/BoundaryML/baml) `BAML is a domain-specific language to generate structured outputs from LLMs` in this project it used to write function called `TrainingPlanGenerator` that takes the activitiy data (optional), your activity, your target and schedule and creates a training plan. The beauty of BAML is, that you can be explicit about the input and output types.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### How to run locally
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. First add the respective credentials in `env.example`. Pleae set `NEXT_USER_AUTHENTICATION` if you don't want to use the `AuthProvider` for user authentication
+2. Run `npm run dev` in root
